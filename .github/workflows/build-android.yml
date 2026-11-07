@@ -1,0 +1,49 @@
+name: Build METEO ESPAÑA APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "meteo_espana_v02/**"
+      - ".github/workflows/build-android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Preparar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generar estructura Android de Flutter
+        working-directory: meteo_espana_v02
+        run: flutter create --platforms=android --org es.meteoespana --project-name meteo_espana --overwrite .
+
+      - name: Instalar dependencias
+        working-directory: meteo_espana_v02
+        run: flutter pub get
+
+      - name: Analizar proyecto
+        working-directory: meteo_espana_v02
+        run: flutter analyze
+
+      - name: Compilar APK release
+        working-directory: meteo_espana_v02
+        run: flutter build apk --release
+
+      - name: Publicar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: METEO-ESPANA-APK
+          path: meteo_espana_v02/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
