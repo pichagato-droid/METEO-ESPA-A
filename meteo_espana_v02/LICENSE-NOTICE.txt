@@ -1,0 +1,4 @@
+METEO ESPAÑA application source: provided as a project starter; review and choose a suitable license before distribution.
+Weather data: Open-Meteo, CC BY 4.0, attribution required.
+Radar: RainViewer public API terms apply; free API is limited to personal, educational and small community use. Commercial use requires separate permission/terms.
+Map tiles: © OpenStreetMap contributors; tile usage policy applies.
